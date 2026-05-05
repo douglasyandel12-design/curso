@@ -294,19 +294,25 @@
   </div>
 
   <script>
-    const password = 'clave123';
+    function validateAccess() {
+      const urlParams = new URLSearchParams(window.location.search);
+      // Leemos los parámetros ?video=...&key=... de la URL
+      const videoId = urlParams.get('video');
+      const key = urlParams.get('key');
+      
+      // Simulación de la clave única (esto se validará en la DB en React)
+      const isValid = (videoId === 'introduccion' && key === '789') || key === 'clave123';
 
-    function requestPassword() {
-      const entry = prompt('Ingrese la clave de acceso al curso:');
-      if (entry !== password) {
-        document.documentElement.innerHTML = ''; 
+      if (!isValid) {
+        document.documentElement.innerHTML = '<div style="display:flex;height:100vh;width:100vw;align-items:center;justify-content:center;background:#000;color:#fff;font-family:sans-serif;"><h1>404 - Página no encontrada o acceso denegado</h1></div>'; 
         document.documentElement.style.background = '#000';
-        return;
+        return false;
       }
+      return true;
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      requestPassword();
+      if (!validateAccess()) return;
 
       const overlay = document.getElementById('videoOverlay');
       overlay.addEventListener('click', () => {
