@@ -5,11 +5,10 @@ export default function AdminVideoForm() {
   const [slug, setSlug] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [videoId, setVideoId] = useState('');
-  const [platform, setPlatform] = useState('vimeo');
-  const [displayOrder, setDisplayOrder] = useState(1);
+  const [file, setFile] = useState(null);
   const [status, setStatus] = useState('');
   const [generatedLinks, setGeneratedLinks] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const handler = (event) => event.preventDefault();
@@ -26,52 +25,55 @@ export default function AdminVideoForm() {
     if (data) setGeneratedLinks(data);
   };
 
-  const extractId = (value) => {
-    if (platform === 'vimeo') {
-      const match = value.match(/vimeo\.com\/(?:video\/)?(\d+)/);
-      return match ? match[1] : value.trim();
-    }
-
-    if (platform === 'youtube') {
-      const youtubeMatch = value.match(/[?&]v=([^&]+)/);
-      if (youtubeMatch) return youtubeMatch[1];
-      const shortMatch = value.match(/youtu\.be\/(.+)/);
-      return shortMatch ? shortMatch[1] : value.trim();
-    }
-
-    return value.trim();
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const cleanedId = extractId(videoId);
 
-    if (!title || !cleanedId || !slug) {
-      setStatus('Completa título, slug y video ID.');
+    if (!title || !slug || !file) {
+      setStatus('Completa título, slug y selecciona un archivo de video.');
       return;
     }
 
-    setStatus('Guardando...');
+    setUploading(true);
+    setStatus('Subiendo video... Por favor espera.');
 
-    const { data, error } = await supabase.from('videos').insert([{
+    // 1. Subir archivo a Supabase Storage
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${slug}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+    
+    const { error: uploadError } = await supabase.storage
+      .from('course_videos')
+      .upload(fileName, file);
+
+    if (uploadError) {
+      setStatus(`Error subiendo: ${uploadError.message}`);
+      setUploading(false);
+      return;
+    }
+
+    // 2. Obtener URL pública segura
+    const { data: { publicUrl } } = supabase.storage
+      .from('course_videos')
+      .getPublicUrl(fileName);
+
+    // 3. Guardar en Base de Datos
+    const { error } = await supabase.from('videos').insert([{
       slug: slug.toLowerCase().replace(/\s+/g, '-'),
       title,
       description,
-      video_id: cleanedId,
-      platform,
-      display_order: displayOrder,
-    }]).select();
+      video_url: publicUrl
+    }]);
 
     if (error) {
       setStatus(`Error: ${error.message}`);
+      setUploading(false);
       return;
     }
 
     setSlug('');
     setTitle('');
     setDescription('');
-    setVideoId('');
-    setDisplayOrder((prev) => prev + 1);
+    setFile(null);
+    setUploading(false);
     setStatus('Video guardado correctamente.');
     fetchLinks();
   };
@@ -98,18 +100,6 @@ export default function AdminVideoForm() {
               placeholder="Nombre del módulo"
             />
           </label>
-
-          <label className="space-y-2 text-xs font-mono tracking-wider text-emerald-500/80 uppercase">
-            Plataforma
-            <select
-              value={platform}
-              onChange={(e) => setPlatform(e.target.value)}
-              className="w-full border border-emerald-500/30 bg-black px-4 py-3 text-emerald-100 outline-none focus:border-emerald-400 focus:shadow-[0_0_10px_rgba(16,185,129,0.2)]"
-            >
-              <option value="vimeo">Vimeo</option>
-              <option value="youtube">YouTube</option>
-            </select>
-          </label>
         </div>
 
         <label className="space-y-2 text-xs font-mono tracking-wider text-emerald-500/80 uppercase">
@@ -123,12 +113,12 @@ export default function AdminVideoForm() {
         </label>
 
         <label className="space-y-2 text-xs font-mono tracking-wider text-emerald-500/80 uppercase">
-          ID o URL del video
+          Archivo de Video (MP4)
           <input
-            value={videoId}
-            onChange={(e) => setVideoId(e.target.value)}
-            className="w-full border border-emerald-500/30 bg-black px-4 py-3 text-emerald-100 outline-none focus:border-emerald-400 focus:shadow-[0_0_10px_rgba(16,185,129,0.2)]"
-            placeholder="https://vimeo.com/123456789"
+            type="file"
+            accept="video/*"
+            onChange={(e) => setFile(e.target.files[0])}
+            className="w-full border border-emerald-500/30 bg-black px-4 py-3 text-emerald-100 outline-none focus:border-emerald-400 focus:shadow-[0_0_10px_rgba(16,185,129,0.2)] file:mr-4 file:py-2 file:px-4 file:rounded-none file:border-0 file:text-xs file:font-mono file:bg-emerald-500/20 file:text-emerald-400 hover:file:bg-emerald-500/30 cursor-pointer"
           />
         </label>
 
@@ -143,21 +133,8 @@ export default function AdminVideoForm() {
           />
         </label>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className="space-y-2 text-xs font-mono tracking-wider text-emerald-500/80 uppercase">
-            Orden de módulo
-            <input
-              type="number"
-              value={displayOrder}
-              onChange={(e) => setDisplayOrder(Number(e.target.value))}
-              className="w-full border border-emerald-500/30 bg-black px-4 py-3 text-emerald-100 outline-none focus:border-emerald-400 focus:shadow-[0_0_10px_rgba(16,185,129,0.2)]"
-              min="1"
-            />
-          </label>
-        </div>
-
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <button type="submit" className="font-mono tracking-widest inline-flex items-center justify-center bg-emerald-500/10 border border-emerald-500 px-8 py-3 text-sm font-bold text-emerald-400 transition hover:bg-emerald-500 hover:text-black hover:shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+          <button type="submit" disabled={uploading} className="font-mono tracking-widest inline-flex items-center justify-center bg-emerald-500/10 border border-emerald-500 px-8 py-3 text-sm font-bold text-emerald-400 transition hover:bg-emerald-500 hover:text-black hover:shadow-[0_0_15px_rgba(16,185,129,0.4)] disabled:opacity-50">
             ENCRIPTAR & GUARDAR
           </button>
           <span className="text-sm font-mono text-emerald-400/70 uppercase">{status}</span>

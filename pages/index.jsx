@@ -1,16 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 
-const embedUrl = (video) => {
-  if (!video) return '';
-
-  if (video.platform === 'vimeo') {
-    return `https://player.vimeo.com/video/${video.video_id}?badge=0&autopause=0&player_id=0&app_id=58479&muted=0&transparent=0`;
-  }
-
-  return `https://www.youtube-nocookie.com/embed/${video.video_id}?rel=0&modestbranding=1&controls=1&disablekb=1&showinfo=0`;
-};
-
 export default function HomePage() {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -101,13 +91,13 @@ export default function HomePage() {
             <>
               <div className="border border-emerald-500/20 bg-black overflow-hidden relative group shadow-[0_0_20px_rgba(16,185,129,0.05)]">
                 <div className="relative overflow-hidden" style={{ paddingTop: '56.25%' }}>
-                  <iframe
-                    className="absolute inset-0 h-full w-full pointer-events-none grayscale-[20%] contrast-125"
-                    style={{ pointerEvents: 'auto' }}
-                    src={embedUrl(selectedVideo)}
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowFullScreen
-                    title={selectedVideo.title}
+                  <video
+                    className="absolute inset-0 h-full w-full object-contain bg-black"
+                    src={selectedVideo.video_url}
+                    controls
+                    controlsList="nodownload"
+                    disablePictureInPicture
+                    onContextMenu={(e) => e.preventDefault()}
                   />
                   <div className="absolute inset-0 z-10 pointer-events-none border-[1px] border-emerald-500/10"></div>
                 </div>

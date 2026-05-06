@@ -1,13 +1,13 @@
 -- Tabla de videos para la plataforma
+drop table if exists videos cascade;
+
 create table videos (
   id uuid primary key default gen_random_uuid(),
   slug text not null unique,
   title text not null,
   description text,
-  video_id text not null,
-  platform text not null check (platform in ('vimeo', 'youtube')),
+  video_url text not null,
   access_token text not null default substring(md5(random()::text) from 1 for 10),
-  display_order int not null default 0,
   created_at timestamp with time zone default timezone('utc', now())
 );
 
