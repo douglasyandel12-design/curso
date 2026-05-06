@@ -58,11 +58,28 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-slate-100 relative font-sans">
+    <div className="min-h-screen bg-black text-slate-100 relative font-sans overflow-hidden">
+      <style>{`
+        @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
+        .scanline { position: absolute; inset: 0; height: 8px; background: linear-gradient(to bottom, transparent, rgba(16,185,129,0.2), transparent); animation: scan 4s linear infinite; pointer-events: none; z-index: 50; }
+        @keyframes scroll { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+        .animate-scroll { animation: scroll 25s linear infinite; white-space: nowrap; }
+      `}</style>
       {/* Cuadrícula de fondo estilo gráfico de trading */}
       <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(16, 185, 129, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 185, 129, 0.07) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+      <div className="scanline"></div>
+
+      <div className="absolute top-0 left-0 w-full bg-emerald-950/40 border-b border-emerald-500/20 text-emerald-500 font-mono text-xs py-1 z-20">
+        <div className="animate-scroll">
+          <span className="mx-6">BTC/USDT 🟢 64,230.50 (+2.4%)</span>
+          <span className="mx-6">ETH/USDT 🔴 3,420.10 (-0.8%)</span>
+          <span className="mx-6">SOL/USDT 🟢 145.20 (+5.1%)</span>
+          <span className="mx-6">XRP/USDT 🟢 132.05 (+1.2%)</span>
+          <span className="mx-6">SYS/STATUS 🟢 SECURE_CONNECTION</span>
+        </div>
+      </div>
       
-      <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col px-4 py-8 z-10">
+      <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col px-4 py-12 z-10">
         <header className="flex items-center justify-between mb-8 px-4 py-4 bg-zinc-950/80 border border-emerald-500/20 backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.1)]">
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
@@ -74,7 +91,8 @@ export default function HomePage() {
         <main className="flex-1 flex flex-col space-y-6 bg-zinc-950/90 border border-emerald-500/20 p-6 backdrop-blur-xl shadow-[0_0_30px_rgba(0,0,0,0.8)]">
           {errorMsg || !selectedVideo ? (
             <div className="flex flex-col items-center justify-center flex-1 min-h-[50vh] text-center border border-red-900/30 bg-red-950/10 p-8 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-red-500/50"></div>
+              <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(239,68,68,0.05)_10px,rgba(239,68,68,0.05)_20px)]"></div>
+              <div className="absolute top-0 left-0 w-full h-1 bg-red-500/80 shadow-[0_0_15px_rgba(239,68,68,0.8)]"></div>
               <h2 className="text-4xl md:text-5xl font-mono font-bold text-red-500 mb-4 tracking-widest drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]">ACCESS DENIED</h2>
               <p className="text-red-400/70 font-mono tracking-wide">CONNECTION_REFUSED: TOKEN NO VÁLIDO O AUSENTE</p>
               <div className="mt-8 px-6 py-2 border border-red-500/20 text-red-500/50 font-mono text-xs uppercase animate-pulse">Esperando enlace de autorización...</div>
@@ -99,7 +117,13 @@ export default function HomePage() {
               </div>
 
               <div className="border border-emerald-500/20 bg-zinc-950 p-6 relative">
-                <h1 className="text-2xl font-mono font-bold text-emerald-400 uppercase tracking-wide">{selectedVideo.title}</h1>
+                <div className="flex justify-between items-start">
+                  <h1 className="text-2xl font-mono font-bold text-emerald-400 uppercase tracking-wide">{selectedVideo.title}</h1>
+                  <div className="text-right hidden sm:block">
+                    <p className="font-mono text-xs text-emerald-500/50">SECURE_ID: {selectedVideo.id.split('-')[0]}</p>
+                    <p className="font-mono text-xs text-emerald-500/50">ENCRYPTION: AES-256</p>
+                  </div>
+                </div>
                 <div className="w-12 h-1 bg-emerald-500/50 my-4"></div>
                 <p className="text-slate-400 font-sans leading-relaxed">{selectedVideo.description}</p>
               </div>

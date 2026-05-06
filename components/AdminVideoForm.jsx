@@ -79,8 +79,13 @@ export default function AdminVideoForm() {
   return (
     <div className="max-w-4xl mx-auto space-y-8 relative z-10">
       <div className="border border-emerald-500/30 bg-zinc-950/90 p-8 shadow-[0_0_30px_rgba(16,185,129,0.05)] backdrop-blur-xl">
-      <h2 className="text-2xl font-mono font-bold text-emerald-400 tracking-wider">SYSTEM_ADMIN // MODULE_UPLOAD</h2>
-      <p className="mt-2 text-sm text-slate-400 font-mono">INGRESA LOS DATOS DEL ENLACE PARA GENERAR UN ACCESO CIFRADO.</p>
+      <div className="flex items-center justify-between border-b border-emerald-500/20 pb-4 mb-6">
+        <div>
+          <h2 className="text-2xl font-mono font-bold text-emerald-400 tracking-wider flex items-center gap-3"><div className="w-3 h-3 bg-emerald-500 rounded-sm animate-pulse"></div>SYSTEM_ADMIN // MODULE_UPLOAD</h2>
+          <p className="mt-2 text-xs text-slate-400 font-mono">INGRESA LOS DATOS DEL ENLACE PARA GENERAR UN ACCESO CIFRADO.</p>
+        </div>
+        <div className="hidden sm:block text-right font-mono text-xs text-emerald-500/50 border border-emerald-500/20 p-2 bg-black">DB_CONN: OK<br/>LATENCY: 12ms</div>
+      </div>
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-6">
         <div className="grid gap-4 md:grid-cols-2">
@@ -161,7 +166,7 @@ export default function AdminVideoForm() {
       </div>
 
       <div className="border border-emerald-500/30 bg-zinc-950/90 p-8 shadow-[0_0_30px_rgba(16,185,129,0.05)] backdrop-blur-xl">
-        <h2 className="text-xl font-mono font-bold text-emerald-400 mb-6 uppercase tracking-wider">Enlaces Generados</h2>
+        <h2 className="text-xl font-mono font-bold text-emerald-400 mb-6 uppercase tracking-wider">ENLACES_GENERADOS // DB_RECORDS</h2>
         <div className="space-y-3">
           {generatedLinks.length === 0 && <p className="text-emerald-500/50 text-sm font-mono uppercase">Aún no hay registros en la base de datos.</p>}
           {generatedLinks.map((link) => {
