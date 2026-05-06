@@ -10,11 +10,7 @@
   <style>
     :root {
       color-scheme: dark;
-      color: #e8edf3;
-      background: #080a11;
       font-family: 'Inter', Arial, sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
     }
 
     * {
@@ -24,246 +20,204 @@
     html, body {
       margin: 0;
       min-height: 100%;
-      background: radial-gradient(circle at top, rgba(46, 121, 255, 0.15), transparent 35%),
-                  linear-gradient(180deg, #0b0d14 0%, #090b11 100%);
-      color: #edf2ff;
+      background-color: #050505;
+      background-image: linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      color: #e2e8f0;
+      overflow-x: hidden;
     }
+
+    /* Ticker Animado */
+    .ticker-bar {
+      position: fixed; top: 0; left: 0; width: 100%;
+      background: rgba(0, 85, 255, 0.1);
+      border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+      color: #00ffff; font-family: monospace; font-size: 0.75rem;
+      padding: 6px 0; z-index: 100; backdrop-filter: blur(8px);
+      display: flex; overflow: hidden; white-space: nowrap;
+    }
+    .ticker-content { animation: scroll 25s linear infinite; display: flex; gap: 3rem; }
+    @keyframes scroll { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+
+    /* Escáner CRT */
+    .scanline {
+      position: fixed; inset: 0; height: 8px;
+      background: linear-gradient(to bottom, transparent, rgba(0,255,255,0.15), transparent);
+      animation: scan 6s linear infinite; pointer-events: none; z-index: 50;
+    }
+    @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
 
     body {
       display: flex;
       justify-content: center;
-      padding: 24px;
+      padding: 54px 24px 24px; /* offset para el ticker */
     }
 
     .page {
       width: 100%;
-      max-width: 1180px;
-      min-height: 100vh;
+      max-width: 1024px;
       display: flex;
       flex-direction: column;
-      gap: 28px;
+      gap: 32px;
+      position: relative;
+      z-index: 10;
     }
 
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 20px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 24px;
-      background: rgba(15, 18, 28, 0.88);
-      backdrop-filter: blur(14px);
+      padding: 16px 24px;
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 16px;
+      background: rgba(0, 85, 255, 0.05);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.05);
     }
 
     .logo {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
+      font-family: monospace;
+      color: #00ffff;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      font-size: 0.95rem;
-      color: #8fb9ff;
     }
 
-    .logo-mark {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #5a7cff, #2cb7ff);
-      display: grid;
-      place-items: center;
-      color: #fff;
-      font-size: 1.15rem;
-      font-weight: 800;
+    .pulse-dot {
+      width: 8px; height: 8px; background: #00ffff; border-radius: 50%;
+      box-shadow: 0 0 8px rgba(0,255,255,0.8);
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+
+    .status-text {
+      font-family: monospace; font-size: 0.75rem; color: #00ffff;
+      padding: 8px 16px; border: 1px solid rgba(0,255,255,0.3);
+      border-radius: 8px; background: #050505; text-transform: uppercase;
+      letter-spacing: 0.1em; box-shadow: 0 0 10px rgba(0,255,255,0.1);
     }
 
-    main {
-      flex: 1;
-      display: grid;
-      gap: 24px;
+    .hero { text-align: center; margin-bottom: 16px; }
+    .hero h1 { margin: 0 0 12px; font-size: clamp(1.8rem, 3vw, 2.5rem); color: #fff; text-shadow: 0 0 15px rgba(0,255,255,0.2); letter-spacing: -0.02em; }
+    .hero p { margin: 0; color: rgba(255,255,255,0.6); font-weight: 300; }
+
+    .main-panel {
+      background: rgba(0, 85, 255, 0.05);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      padding: 32px; border-radius: 24px; backdrop-filter: blur(16px);
+      box-shadow: 0 0 40px rgba(0,0,0,0.8);
+      display: grid; gap: 24px;
     }
 
     .video-card {
-      position: relative;
-      background: rgba(12, 15, 24, 0.9);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 28px;
+      background: #050505;
+      border: 1px solid rgba(0,255,255,0.3);
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 30px 100px rgba(0,0,0,0.28);
+      position: relative;
+      transition: all 0.5s ease;
+    }
+    .video-card:hover {
+      border-color: #00ffff;
+      box-shadow: 0 0 30px rgba(0,255,255,0.25);
     }
 
     .video-wrapper {
       position: relative;
       width: 100%;
       padding-top: 56.25%;
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
     }
 
     .video-wrapper iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-      border-radius: 0;
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      border: 0; background: #050505;
     }
 
     .video-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0);
-      pointer-events: auto;
-      cursor: pointer;
+      position: absolute; inset: 0; background: transparent; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; z-index: 20;
     }
 
-    .video-overlay::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08));
-      pointer-events: none;
+    .hint {
+      padding: 12px 24px; border-radius: 8px; background: rgba(5,5,5,0.8);
+      color: #00ffff; font-family: monospace; border: 1px solid rgba(0,255,255,0.3);
+      box-shadow: 0 0 15px rgba(0,255,255,0.2); text-transform: uppercase;
+      font-size: 0.85rem; letter-spacing: 0.1em; pointer-events: none;
     }
 
-    .video-overlay .hint {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      padding: 12px 18px;
-      border-radius: 999px;
-      background: rgba(20, 26, 44, 0.82);
-      color: #cbd7ff;
-      font-size: 0.95rem;
-      letter-spacing: 0.02em;
-      border: 1px solid rgba(255,255,255,0.06);
-      pointer-events: none;
+    .video-info {
+      padding: 24px; background: rgba(0, 85, 255, 0.05);
+      border: 1px solid rgba(0, 255, 255, 0.2); border-radius: 16px;
     }
 
-    .content {
-      display: grid;
-      gap: 18px;
-      padding: 28px 28px 32px;
+    .info-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; margin-bottom: 16px;
+    }
+    .info-header h2 { margin: 0; font-size: 1.5rem; color: #fff; }
+    
+    .meta-data {
+      text-align: right; font-family: monospace; font-size: 0.75rem;
+      color: rgba(0, 255, 255, 0.5); display: none;
+    }
+    @media (min-width: 640px) { .meta-data { display: block; } }
+
+    .separator {
+      width: 64px; height: 2px;
+      background: linear-gradient(90deg, #00ffff, transparent); margin-bottom: 16px;
     }
 
-    .title {
-      margin: 0;
-      font-size: clamp(1.75rem, 2.5vw, 2.6rem);
-      letter-spacing: -0.05em;
-      line-height: 1.04;
-      color: #f8fbff;
-    }
-
-    .description {
-      margin: 0;
-      max-width: 760px;
-      color: #bbc4d4;
-      font-size: 1rem;
-    }
-
-    .module-box {
-      display: grid;
-      gap: 14px;
-      padding: 22px;
-      border-radius: 22px;
-      background: rgba(15, 18, 28, 0.86);
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .module-box h2 {
-      margin: 0;
-      font-size: 1.15rem;
-      color: #e8eefb;
-    }
-
-    .module-box p {
-      margin: 0;
-      color: #c5cdd9;
-      line-height: 1.7;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      align-items: center;
-    }
+    .description { margin: 0; color: #cbd5e1; font-weight: 300; line-height: 1.7; }
 
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 52px;
-      padding: 0 22px;
-      border-radius: 999px;
-      border: none;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 12px 24px; border-radius: 8px; border: 1px solid #00ffff;
+      background: rgba(0,255,255,0.1); color: #00ffff; font-family: monospace;
+      font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none; cursor: pointer; transition: all 0.3s ease;
     }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #5d86ff, #38d7ff);
-      color: #081023;
-      box-shadow: 0 12px 30px rgba(56, 215, 255, 0.22);
-    }
-
-    .btn-secondary {
-      background: rgba(255,255,255,0.04);
-      color: #d7e0ff;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
     .btn:hover {
-      transform: translateY(-1px);
-    }
-
-    .btn:focus-visible {
-      outline: 2px solid rgba(93, 134, 255, 0.7);
-      outline-offset: 4px;
+      background: #00ffff; color: #050505;
+      box-shadow: 0 0 25px rgba(0,255,255,0.6);
     }
 
     footer {
-      display: flex;
-      justify-content: center;
-      padding: 18px 12px 34px;
-      color: #6f7b94;
-      font-size: 0.95rem;
-    }
-
-    @media (max-width: 768px) {
-      body {
-        padding: 16px;
-      }
-
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .actions {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .btn {
-        width: 100%;
-      }
+      text-align: center; color: rgba(0,255,255,0.4);
+      font-family: monospace; font-size: 0.75rem; margin-top: 16px;
     }
   </style>
 </head>
 <body>
+  <div class="scanline"></div>
+  <div class="ticker-bar">
+    <div class="ticker-content">
+      <span>SYS_CORE 🔵 ONLINE</span>
+      <span>ENCRYPTION 🔵 AES-256</span>
+      <span>NETWORK_SEC 🔵 ACTIVE</span>
+      <span>DATA_STREAM 🔵 ENCRYPTED</span>
+      <span>NODE_STATUS 🔵 OPTIMAL</span>
+    </div>
+  </div>
+
   <div class="page">
     <header>
       <div class="logo">
-        <div class="logo-mark">V</div>
-        <span>VideoCurso Privado</span>
+        <div class="pulse-dot"></div>
+        <span>DEEP_TECH // SECURE_PORTAL</span>
       </div>
-      <div>Acceso exclusivo</div>
+      <div class="status-text">AUTHORIZED</div>
     </header>
 
-    <main>
+    <div class="hero">
+      <h1>SISTEMA DE ACCESO A VIDEO PROTEGIDO</h1>
+      <p>La seguridad de tus contenidos es nuestra prioridad. Tu curso está a un paso.</p>
+    </div>
+
+    <main class="main-panel">
       <section class="video-card">
         <div class="video-wrapper">
           <iframe src="https://player.vimeo.com/video/123456789?badge=0&autopause=0&player_id=0&app_id=58479"
@@ -271,26 +225,27 @@
                   allowfullscreen
                   title="Módulo de Video"></iframe>
           <div class="video-overlay" id="videoOverlay" aria-label="Haz clic para activar el reproductor">
-            <div class="hint">Toca para activar el video</div>
+            <div class="hint">[ INICIAR TRANSMISIÓN ]</div>
           </div>
-        </div>
-        <div class="content">
-          <h1 class="title">Módulo 1: Dominio completo del contenido</h1>
-          <p class="description">Accede al módulo privado con una presentación fluida, recursos descargables y una experiencia de aprendizaje segura. Si necesitas más material, descarga el PDF de recursos adicionales.</p>
         </div>
       </section>
 
-      <section class="module-box">
-        <h2>Descripción del módulo</h2>
-        <p>Este módulo cubre las bases esenciales del curso, demostrando mejores prácticas y estrategias paso a paso. El video está protegido y diseñado para mostrarse solo a usuarios autorizados.</p>
-        <div class="actions">
-          <a href="#" class="btn btn-primary" download="recursos-adicionales.pdf">Recursos adicionales</a>
-          <button class="btn btn-secondary" type="button" onclick="alert('Próximamente: material complementario disponible aquí.')">Ver más detalles</button>
+      <section class="video-info">
+        <div class="info-header">
+          <h2>Módulo 1: Dominio completo del contenido</h2>
+          <div class="meta-data">
+            <div>SECURE_ID: 1A2B3C</div>
+            <div>ENCRYPTION: AES-256</div>
+          </div>
         </div>
+        <div class="separator"></div>
+        <p class="description">Este módulo cubre las bases esenciales del curso, demostrando mejores prácticas y estrategias paso a paso. El video está protegido y diseñado para mostrarse solo a usuarios autorizados. Si necesitas más material, descarga el recurso adicional abajo.</p>
+        <br>
+        <a href="#" class="btn" download="recursos-adicionales.pdf">DESCARGAR RECURSOS SEC_1</a>
       </section>
     </main>
 
-    <footer>Diseñado para acceso privado. No compartas el enlace público sin autorización.</footer>
+    <footer>SISTEMA DISEÑADO PARA ACCESO PRIVADO. MONITOREO DE RED ACTIVADO.</footer>
   </div>
 
   <script>
@@ -304,8 +259,8 @@
       const isValid = (videoId === 'introduccion' && key === '789') || key === 'clave123';
 
       if (!isValid) {
-        document.documentElement.innerHTML = '<div style="display:flex;height:100vh;width:100vw;align-items:center;justify-content:center;background:#000;color:#fff;font-family:sans-serif;"><h1>404 - Página no encontrada o acceso denegado</h1></div>'; 
-        document.documentElement.style.background = '#000';
+        document.documentElement.innerHTML = '<div style="display:flex;flex-direction:column;height:100vh;width:100vw;align-items:center;justify-content:center;background:#050505;color:#ef4444;font-family:monospace;text-align:center;"><div style="font-size:3rem;font-weight:bold;text-shadow:0 0 15px rgba(239,68,68,0.5);">ACCESS DENIED</div><p style="color:rgba(239,68,68,0.7);">CONNECTION_REFUSED: TOKEN NO VÁLIDO O AUSENTE</p></div>'; 
+        document.documentElement.style.background = '#050505';
         return false;
       }
       return true;
