@@ -40,3 +40,17 @@ as $$
 $$;
 
 -- Nota: Para acceso por email invité, valida el email del usuario en el frontend o genera un perfil autorizado que se sincronice con invited_emails.
+
+-- ==========================================
+-- CONFIGURACIÓN DE ALMACENAMIENTO (STORAGE)
+-- ==========================================
+
+-- 1. Asegurar que el "disco duro" (bucket) existe y es público
+insert into storage.buckets (id, name, public) 
+values ('course_videos', 'course_videos', true) 
+on conflict do nothing;
+
+-- 2. Permitir que el administrador (usuario logueado) pueda subir archivos
+create policy "Admin upload videos" 
+on storage.objects for insert to authenticated 
+with check ( bucket_id = 'course_videos' );

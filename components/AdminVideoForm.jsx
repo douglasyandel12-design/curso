@@ -38,7 +38,8 @@ export default function AdminVideoForm() {
 
     // 1. Subir archivo a Supabase Storage
     const fileExt = file.name.split('.').pop();
-    const fileName = `${slug}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+    const safeSlug = slug.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    const fileName = `${safeSlug}-${Math.random().toString(36).substring(2)}.${fileExt}`;
     
     const { error: uploadError } = await supabase.storage
       .from('course_videos')
@@ -57,7 +58,7 @@ export default function AdminVideoForm() {
 
     // 3. Guardar en Base de Datos
     const { error } = await supabase.from('videos').insert([{
-      slug: slug.toLowerCase().replace(/\s+/g, '-'),
+      slug: safeSlug,
       title,
       description,
       video_url: publicUrl
