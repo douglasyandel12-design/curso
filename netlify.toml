@@ -1,0 +1,9 @@
+[build]
+  # Comando para empaquetar tu aplicación antes de publicarla
+  command = "npm run build"
+  # Directorio donde se guardan los archivos finales listos para la web
+  publish = ".next"
+
+[[plugins]]
+  # Plugin oficial de Netlify para que las rutas de Next.js funcionen sin fallos
+  package = "@netlify/plugin-nextjs"

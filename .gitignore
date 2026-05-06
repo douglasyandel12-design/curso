@@ -4,3 +4,17 @@ Thumbs.db
 
 # Configuraciones locales del editor
 .vscode/
+
+# Dependencias (Archivos súper pesados)
+node_modules/
+
+# Archivos generados automáticamente al compilar (Next.js / React)
+.next/
+build/
+dist/
+
+# Claves secretas y variables de entorno (¡CRÍTICO PARA SEGURIDAD!)
+.env
+.env.local
+.env.development
+.env.production
