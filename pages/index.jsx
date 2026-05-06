@@ -57,38 +57,42 @@ export default function HomePage() {
     return <div className="min-h-screen bg-black flex items-center justify-center text-slate-400">Verificando seguridad...</div>;
   }
 
-  if (errorMsg || !selectedVideo) {
-    return (
-      <div className="min-h-screen bg-black flex flex-col items-center justify-center text-slate-100 p-6 text-center">
-        <h1 className="text-6xl font-bold text-red-500 mb-4">404</h1>
-        <p className="text-xl text-slate-300">{errorMsg || 'Página no encontrada'}</p>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <div className="mx-auto flex min-h-screen max-w-5xl flex-col px-4 py-12">
-        <main className="flex-1 space-y-6 rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-2xl shadow-black/50">
-                <div className="rounded-3xl border border-slate-800 bg-slate-950/90 overflow-hidden shadow-inner shadow-slate-950/40">
-                  <div className="relative overflow-hidden" style={{ paddingTop: '56.25%' }}>
-                    <iframe
-                      className="absolute inset-0 h-full w-full pointer-events-none"
-                      style={{ pointerEvents: 'auto' }}
-                      src={embedUrl(selectedVideo)}
-                      allow="autoplay; fullscreen; picture-in-picture"
-                      allowFullScreen
-                      title={selectedVideo.title}
-                    />
-                    {/* Capa invisible z-10 para complicar la inspección del DOM sobre el Iframe */}
-                    <div className="absolute inset-0 z-10 pointer-events-none"></div>
-                  </div>
-                </div>
+        <header className="flex items-center justify-between mb-6 px-2">
+          <div className="font-semibold text-slate-400 tracking-wider uppercase text-sm">Plataforma de Video</div>
+          <a href="/admin" className="rounded-lg border border-slate-800 bg-slate-900 px-4 py-2 text-sm text-slate-400 transition hover:bg-slate-800 hover:text-white">Acceso Admin</a>
+        </header>
 
-                <div className="rounded-3xl border border-slate-800 bg-slate-950/90 p-6">
-                  <h1 className="text-3xl font-semibold text-white">{selectedVideo.title}</h1>
-                  <p className="mt-3 text-slate-400">{selectedVideo.description}</p>
+        <main className="flex-1 flex flex-col space-y-6 rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-2xl shadow-black/50">
+          {errorMsg || !selectedVideo ? (
+            <div className="flex flex-col items-center justify-center flex-1 min-h-[50vh] text-center">
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-600 mb-4">No tienes link para entrar</h2>
+              <p className="text-slate-400">Pídele al administrador que te envíe el enlace de tu clase.</p>
+            </div>
+          ) : (
+            <>
+              <div className="rounded-3xl border border-slate-800 bg-slate-950/90 overflow-hidden shadow-inner shadow-slate-950/40">
+                <div className="relative overflow-hidden" style={{ paddingTop: '56.25%' }}>
+                  <iframe
+                    className="absolute inset-0 h-full w-full pointer-events-none"
+                    style={{ pointerEvents: 'auto' }}
+                    src={embedUrl(selectedVideo)}
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowFullScreen
+                    title={selectedVideo.title}
+                  />
+                  <div className="absolute inset-0 z-10 pointer-events-none"></div>
                 </div>
+              </div>
+
+              <div className="rounded-3xl border border-slate-800 bg-slate-950/90 p-6">
+                <h1 className="text-3xl font-semibold text-white">{selectedVideo.title}</h1>
+                <p className="mt-3 text-slate-400">{selectedVideo.description}</p>
+              </div>
+            </>
+          )}
           </main>
       </div>
     </div>
