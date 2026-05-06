@@ -23,11 +23,17 @@ export default function AdminPage() {
     e.preventDefault();
     setLoading(true);
     setLoginError('');
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      setLoginError(error.message);
-    }
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        setLoginError(error.message);
+        console.error("Error de Supabase:", error);
+      }
+    } catch (err) {
+      setLoginError(err.message || 'Error de red inesperado al conectar.');
+    } finally {
     setLoading(false);
+    }
   };
 
   // Si no ha iniciado sesión, mostramos el login
