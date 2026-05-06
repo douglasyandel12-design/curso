@@ -12,6 +12,8 @@ create table videos (
 );
 
 -- Tabla de correos invitados para acceso por invitación
+drop table if exists invited_emails cascade;
+
 create table invited_emails (
   id uuid primary key default gen_random_uuid(),
   email text not null unique,
@@ -51,6 +53,7 @@ values ('course_videos', 'course_videos', true)
 on conflict do nothing;
 
 -- 2. Permitir que el administrador (usuario logueado) pueda subir archivos
+drop policy if exists "Admin upload videos" on storage.objects;
 create policy "Admin upload videos" 
 on storage.objects for insert to authenticated 
 with check ( bucket_id = 'course_videos' );

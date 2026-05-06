@@ -48,74 +48,76 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-slate-100 relative font-sans overflow-hidden">
+    <div className="min-h-screen bg-[#050505] text-slate-100 relative font-sans overflow-hidden">
       <style>{`
         @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
-        .scanline { position: absolute; inset: 0; height: 8px; background: linear-gradient(to bottom, transparent, rgba(16,185,129,0.2), transparent); animation: scan 4s linear infinite; pointer-events: none; z-index: 50; }
+        .scanline { position: absolute; inset: 0; height: 8px; background: linear-gradient(to bottom, transparent, rgba(0,255,255,0.15), transparent); animation: scan 6s linear infinite; pointer-events: none; z-index: 50; }
         @keyframes scroll { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
         .animate-scroll { animation: scroll 25s linear infinite; white-space: nowrap; }
       `}</style>
-      {/* Cuadrícula de fondo estilo gráfico de trading */}
-      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(16, 185, 129, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 185, 129, 0.07) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+      
+      {/* Cuadrícula de fondo Deep-Tech */}
+      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
       <div className="scanline"></div>
 
-      <div className="absolute top-0 left-0 w-full bg-emerald-950/40 border-b border-emerald-500/20 text-emerald-500 font-mono text-xs py-1 z-20">
+      {/* Ticker de información del sistema */}
+      <div className="absolute top-0 left-0 w-full bg-[#0055FF]/10 border-b border-cyan-500/20 text-cyan-400 font-mono text-xs py-1 z-20 backdrop-blur-md">
         <div className="animate-scroll">
-          <span className="mx-6">BTC/USDT 🟢 64,230.50 (+2.4%)</span>
-          <span className="mx-6">ETH/USDT 🔴 3,420.10 (-0.8%)</span>
-          <span className="mx-6">SOL/USDT 🟢 145.20 (+5.1%)</span>
-          <span className="mx-6">XRP/USDT 🟢 132.05 (+1.2%)</span>
-          <span className="mx-6">SYS/STATUS 🟢 SECURE_CONNECTION</span>
+          <span className="mx-6">SYS_CORE 🔵 ONLINE</span>
+          <span className="mx-6">ENCRYPTION 🔵 AES-256</span>
+          <span className="mx-6">NETWORK_SEC 🔵 ACTIVE</span>
+          <span className="mx-6">DATA_STREAM 🔵 ENCRYPTED</span>
+          <span className="mx-6">NODE_STATUS 🔵 OPTIMAL</span>
         </div>
       </div>
       
       <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col px-4 py-12 z-10">
-        <header className="flex items-center justify-between mb-8 px-4 py-4 bg-zinc-950/80 border border-emerald-500/20 backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+        <header className="flex items-center justify-between mb-8 px-6 py-4 bg-[#0055FF]/5 border border-cyan-500/20 backdrop-blur-lg rounded-2xl shadow-[0_0_20px_rgba(0,255,255,0.05)]">
           <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-            <div className="font-mono text-emerald-500 tracking-widest uppercase text-xs sm:text-sm">TRADING_DESK // SECURE_FEED</div>
+            <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(0,255,255,0.8)]"></div>
+            <div className="font-mono text-cyan-400 tracking-widest uppercase text-xs sm:text-sm">DEEP_TECH // SECURE_PORTAL</div>
           </div>
-          <a href="/admin" className="font-mono uppercase tracking-wider border border-emerald-500/30 bg-black px-4 py-2 text-xs text-emerald-500 transition hover:bg-emerald-950 hover:border-emerald-400 hover:shadow-[0_0_10px_rgba(16,185,129,0.3)]">ADMIN_LOGIN</a>
+          <a href="/admin" className="font-mono uppercase tracking-wider rounded-lg border border-cyan-500/30 bg-[#050505] px-4 py-2 text-xs text-cyan-400 transition-all duration-300 hover:bg-cyan-500 hover:text-[#050505] hover:shadow-[0_0_15px_rgba(0,255,255,0.5)]">ADMIN_LOGIN</a>
         </header>
 
-        <main className="flex-1 flex flex-col space-y-6 bg-zinc-950/90 border border-emerald-500/20 p-6 backdrop-blur-xl shadow-[0_0_30px_rgba(0,0,0,0.8)]">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white drop-shadow-[0_0_15px_rgba(0,255,255,0.2)]">SISTEMA DE ACCESO A VIDEO PROTEGIDO</h1>
+          <p className="mt-3 text-sm text-cyan-100/60 font-light">La seguridad de tus contenidos es nuestra prioridad. Tu curso está a un paso.</p>
+        </div>
+
+        <main className="flex-1 flex flex-col space-y-6 bg-[#0055FF]/5 border border-cyan-500/20 p-6 sm:p-8 rounded-3xl backdrop-blur-xl shadow-[0_0_40px_rgba(0,0,0,0.8)]">
           {errorMsg || !selectedVideo ? (
-            <div className="flex flex-col items-center justify-center flex-1 min-h-[50vh] text-center border border-red-900/30 bg-red-950/10 p-8 relative overflow-hidden">
-              <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(239,68,68,0.05)_10px,rgba(239,68,68,0.05)_20px)]"></div>
-              <div className="absolute top-0 left-0 w-full h-1 bg-red-500/80 shadow-[0_0_15px_rgba(239,68,68,0.8)]"></div>
-              <h2 className="text-4xl md:text-5xl font-mono font-bold text-red-500 mb-4 tracking-widest drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]">ACCESS DENIED</h2>
-              <p className="text-red-400/70 font-mono tracking-wide">CONNECTION_REFUSED: TOKEN NO VÁLIDO O AUSENTE</p>
-              <div className="mt-8 px-6 py-2 border border-red-500/20 text-red-500/50 font-mono text-xs uppercase animate-pulse">Esperando enlace de autorización...</div>
+            <div className="flex flex-col items-center justify-center flex-1 min-h-[40vh] text-center border border-cyan-500/30 bg-[#0055FF]/10 p-10 rounded-2xl relative overflow-hidden backdrop-blur-md shadow-[0_0_30px_rgba(0,255,255,0.05)]">
+              <div className="absolute top-0 left-0 w-full h-1 bg-cyan-400 shadow-[0_0_15px_rgba(0,255,255,0.8)]"></div>
+              <h2 className="text-2xl md:text-3xl font-bold text-cyan-300 mb-4 tracking-wide drop-shadow-[0_0_10px_rgba(0,255,255,0.4)]">[PROTECCIÓN DEL CURSO ACTIVADA]</h2>
+              <p className="text-cyan-100/70 font-light mb-8 max-w-md">El acceso está restringido. Utiliza el <span className="text-cyan-400 font-medium">Enlace de Acceso Único</span> proporcionado por el administrador para desbloquear tu contenido.</p>
+              <div className="px-8 py-3 rounded-lg border border-cyan-500/40 bg-[#050505] text-cyan-500/60 font-mono text-xs uppercase animate-pulse shadow-[inset_0_0_15px_rgba(0,255,255,0.1)]">Esperando autenticación segura...</div>
             </div>
           ) : (
             <>
-              <div className="border border-emerald-500/20 bg-black overflow-hidden relative group shadow-[0_0_20px_rgba(16,185,129,0.05)]">
+              <div className="rounded-2xl border border-cyan-500/30 bg-[#050505] overflow-hidden relative group transition-all duration-500 hover:border-cyan-400 hover:shadow-[0_0_30px_rgba(0,255,255,0.25)]">
                 <div className="relative overflow-hidden" style={{ paddingTop: '56.25%' }}>
                   <video
-                    className="absolute inset-0 h-full w-full object-contain bg-black"
+                    className="absolute inset-0 h-full w-full object-contain bg-[#050505]"
                     src={selectedVideo.video_url}
                     controls
                     controlsList="nodownload"
                     disablePictureInPicture
                     onContextMenu={(e) => e.preventDefault()}
                   />
-                  <div className="absolute inset-0 z-10 pointer-events-none border-[1px] border-emerald-500/10"></div>
                 </div>
-                {/* Marcos decorativos estilo cámara de seguridad/terminal */}
-                <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-emerald-500/50 pointer-events-none"></div>
-                <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-emerald-500/50 pointer-events-none"></div>
               </div>
 
-              <div className="border border-emerald-500/20 bg-zinc-950 p-6 relative">
+              <div className="rounded-2xl border border-cyan-500/20 bg-[#0055FF]/5 backdrop-blur-md p-6 relative">
                 <div className="flex justify-between items-start">
-                  <h1 className="text-2xl font-mono font-bold text-emerald-400 uppercase tracking-wide">{selectedVideo.title}</h1>
+                  <h2 className="text-xl md:text-2xl font-bold text-white tracking-wide">{selectedVideo.title}</h2>
                   <div className="text-right hidden sm:block">
-                    <p className="font-mono text-xs text-emerald-500/50">SECURE_ID: {selectedVideo.id.split('-')[0]}</p>
-                    <p className="font-mono text-xs text-emerald-500/50">ENCRYPTION: AES-256</p>
+                    <p className="font-mono text-xs text-cyan-500/50">SECURE_ID: {selectedVideo.id.split('-')[0]}</p>
+                    <p className="font-mono text-xs text-cyan-500/50">ENCRYPTION: AES-256</p>
                   </div>
                 </div>
-                <div className="w-12 h-1 bg-emerald-500/50 my-4"></div>
-                <p className="text-slate-400 font-sans leading-relaxed">{selectedVideo.description}</p>
+                <div className="w-16 h-[2px] bg-gradient-to-r from-cyan-400 to-transparent my-4"></div>
+                <p className="text-slate-300 font-light leading-relaxed">{selectedVideo.description}</p>
               </div>
             </>
           )}
