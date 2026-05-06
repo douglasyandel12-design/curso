@@ -5,3 +5,39 @@
 body {
   background-color: #050505;
 }
+
+/* --- Estilos Personalizados y Animaciones --- */
+
+/* Escáner CRT (Línea que baja) */
+@keyframes scan {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+
+.scanline {
+  position: absolute;
+  inset: 0;
+  height: 8px;
+  background: linear-gradient(to bottom, transparent, rgba(0, 255, 255, 0.2), transparent);
+  animation: scan 4s linear infinite;
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* Ticker / Cinta de texto deslizante */
+@keyframes scroll {
+  0% { transform: translateX(100vw); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-scroll {
+  animation: scroll 25s linear infinite;
+  white-space: nowrap;
+}
+
+/* Fondo Deep-Tech (Cuadrícula) */
+.bg-grid-pattern {
+  background-image: linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}

@@ -49,15 +49,9 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-slate-100 relative font-sans overflow-hidden">
-      <style>{`
-        @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
-        .scanline { position: absolute; inset: 0; height: 8px; background: linear-gradient(to bottom, transparent, rgba(0,255,255,0.15), transparent); animation: scan 6s linear infinite; pointer-events: none; z-index: 50; }
-        @keyframes scroll { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
-        .animate-scroll { animation: scroll 25s linear infinite; white-space: nowrap; }
-      `}</style>
       
       {/* Cuadrícula de fondo Deep-Tech */}
-      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+      <div className="absolute inset-0 pointer-events-none bg-grid-pattern"></div>
       <div className="scanline"></div>
 
       {/* Ticker de información del sistema */}

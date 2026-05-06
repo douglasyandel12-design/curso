@@ -40,13 +40,7 @@ export default function AdminPage() {
   if (!session) {
     return (
       <div className="min-h-screen bg-[#050505] flex items-center justify-center p-4 font-sans relative overflow-hidden">
-        <style>{`
-          @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
-          .scanline { position: absolute; inset: 0; height: 8px; background: linear-gradient(to bottom, transparent, rgba(0,255,255,0.2), transparent); animation: scan 3s linear infinite; pointer-events: none; z-index: 50; }
-          @keyframes scroll { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
-          .animate-scroll { animation: scroll 20s linear infinite; white-space: nowrap; }
-        `}</style>
-        <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+        <div className="absolute inset-0 pointer-events-none bg-grid-pattern"></div>
         <div className="scanline"></div>
 
         <div className="absolute top-0 left-0 w-full bg-[#0055FF]/10 border-b border-cyan-500/20 text-cyan-400 font-mono text-xs py-1 z-20 backdrop-blur-md">
@@ -83,11 +77,7 @@ export default function AdminPage() {
   // Si ya inició sesión, mostramos el formulario de videos
   return (
     <div className="min-h-screen bg-[#050505] py-16 px-4 font-sans relative overflow-hidden">
-      <style>{`
-        @keyframes scroll { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
-        .animate-scroll { animation: scroll 20s linear infinite; white-space: nowrap; }
-      `}</style>
-      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+      <div className="absolute inset-0 pointer-events-none bg-grid-pattern"></div>
       
       <div className="absolute top-0 left-0 w-full bg-[#0055FF]/10 border-b border-cyan-500/20 text-cyan-400 font-mono text-xs py-1 z-20 backdrop-blur-md">
         <div className="animate-scroll">
